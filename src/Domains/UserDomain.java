@@ -1,6 +1,7 @@
 package Domains;
-
-public class UserDomain {
+import java.io.Serializable;
+public class UserDomain implements Serializable{
+    private static final long serialVersionUID = 1L;
     private String FullName;
     private String Email;
     private String Phone;

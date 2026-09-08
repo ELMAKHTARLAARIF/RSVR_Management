@@ -1,9 +1,7 @@
 import Controllers.AuthController;
 import Controllers.RoomController;
-import Domains.RoomDomain;
 import Domains.UserDomain;
-import Repositories.GenericRepository;
-import Repositories.Implementation.IGenericRepository;
+import Repositories.RoomRepository;
 import Repositories.UserRepository;
 import Services.AuthService;
 import Services.RoomService;
@@ -13,18 +11,17 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        IGenericRepository<UserDomain> userRepo = new GenericRepository<>();
-        UserRepository userR = new UserRepository();
-/*        IGenericRepository<RoomDomain> roomRepo = new GenericRepository<>();*/
-        AuthService authService = new AuthService(userRepo,userR);
+
+        UserRepository userRepo = new UserRepository();
+        AuthService authService = new AuthService(userRepo);
         AuthController authController = new AuthController(authService);
 
-//        RoomService roomService = new RoomService(roomRepo);
-//        RoomController roomController = new RoomController(roomService);
+        RoomRepository roomsRepo = new RoomRepository();
+        RoomService roomService = new RoomService(roomsRepo);
+        RoomController roomController = new RoomController(roomService);
 
         boolean running = true;
         boolean isLoggedIn = false;
-        String currentUser = "";
 
         while (running) {
             if (!isLoggedIn) {
@@ -41,22 +38,24 @@ public class Main {
                 switch (choice) {
                     case 1:
                         authController.register(scanner);
-                        isLoggedIn = true;
                         break;
                     case 2:
-                        authController.login(scanner);
-                        isLoggedIn = true;
-//                        currentUser = "Alice Dupont";
+                        UserDomain loggedInUser = authController.login(scanner);
+                        if (loggedInUser != null) {
+                            isLoggedIn = true;
+                            System.out.println("\nLogged in successfully!\n");
+                        }
                         break;
                     case 0:
                         running = false;
+                        System.out.println("Goodbye!");
                         break;
                     default:
-                        System.out.println("\nInvalid choice. Please enter a valid number.\n");break;
+                        System.out.println("\nInvalid choice. Please enter a valid number.\n");
                 }
             } else {
                 System.out.println("================================");
-//                System.out.println("Logged in as: " + Session.getCurrentUser().getName());
+                System.out.println("MAIN MENU");
                 System.out.println("================================");
                 System.out.println("1. Search available rooms");
                 System.out.println("2. View all rooms");
@@ -73,27 +72,20 @@ public class Main {
                 int choice = readSafeInt(scanner);
 
                 switch (choice) {
-                    case 1:
+
                     case 2:
-                    case 3:
-                    case 4:
-                    case 5:
-                    case 6:
-                    case 7:
-                    case 8:
-//                        System.out.println("\n--- Action " + choice + " executed for " + Session.getCurrentUser().getName() + " ---\n");
+                        roomController.viewAllRooms();
                         break;
                     case 9:
-                        System.out.println("\nLogged out successfully.\n");
                         isLoggedIn = false;
-
+                        System.out.println("\nLogged out successfully.\n");
                         break;
                     case 0:
                         running = false;
                         System.out.println("Goodbye!");
                         break;
                     default:
-                        System.out.println("\nInvalid choice. Please enter a valid number.\n");
+                        System.out.println("\n--- Action " + choice + " executed ---\n");
                 }
             }
         }

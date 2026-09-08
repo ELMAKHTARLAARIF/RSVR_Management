@@ -34,25 +34,28 @@ public class AuthController {
             System.out.println("Error: " + e.getMessage() + "\n");
         }
     }
-    public void login(Scanner scanner){
-            try {
-                System.out.println("\n------Login--------");
-                System.out.println("Email: ");
-                String email = scanner.nextLine();
+    public UserDomain login(Scanner scanner) {
+        try {
+            System.out.println("\n------Login--------");
+            System.out.print("Email: ");
+            String email = scanner.nextLine();
 
-                System.out.println("Password: ");
-                String password = scanner.nextLine();
+            System.out.print("Password: ");
+            String password = scanner.nextLine();
 
-                UserDomain user = authService.login( email, password);
-                if (user == null) {
-                    System.out.println("Invalid credentials,Try Again");
-                }else{
-                    System.out.println("Login Successfully");
-                }
-
-            }  catch (IllegalArgumentException e) {
-                System.out.println("Error: " + e.getMessage() + "\n");
+            UserDomain user = authService.login(email, password);
+            if (user == null) {
+                System.out.println("Invalid credentials, Try Again\n");
+                return null;
+            } else {
+                System.out.println("Login Successfully\n");
+                return user;
             }
+
+        } catch (IllegalArgumentException e) {
+            System.out.println("Error: " + e.getMessage() + "\n");
+            return null;
+        }
     }
 
 }
