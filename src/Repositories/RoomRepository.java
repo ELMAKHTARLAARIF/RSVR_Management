@@ -6,6 +6,9 @@ import Domains.RoomType;
 import Domains.RoomStatus;
 import Repositories.Implementation.IMemoryRoomRepository;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class RoomRepository extends GenericRepository<RoomDomain> implements IMemoryRoomRepository {
     public RoomRepository() {
         super("rooms.dat"); // Saves room data to rooms.dat
@@ -25,5 +28,6 @@ public class RoomRepository extends GenericRepository<RoomDomain> implements IMe
         create(new RoomDomain("301", RoomType.DELUXE, 200.0, 3, RoomStatus.AVAILABLE));
         create(new RoomDomain("302", RoomType.DELUXE, 200.0, 3, RoomStatus.AVAILABLE));
     }
+
 }
 

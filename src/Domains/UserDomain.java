@@ -1,12 +1,15 @@
 package Domains;
 import java.io.Serializable;
-public class UserDomain implements Serializable{
+import java.util.UUID;
+
+public class UserDomain implements Serializable {
     private static final long serialVersionUID = 1L;
     private String FullName;
     private String Email;
     private String Phone;
     private String Password;
     private static final int VALID_PASSWORD_LENGTH = 8;
+
 
     public UserDomain(String fullName, String email, String phone, String password) {
         setFullName(fullName);
@@ -15,18 +18,10 @@ public class UserDomain implements Serializable{
         setPassword(password);
     }
 
-    public String getFullName() {
-        return this.FullName;
-    }
-    public String getEmail() {
-        return this.Email;
-    }
-    public String getPhone() {
-        return this.Phone;
-    }
-    public String getPassword() {
-        return this.Password;
-    }
+    public String getFullName() { return this.FullName; }
+    public String getEmail() { return this.Email; }
+    public String getPhone() { return this.Phone; }
+    public String getPassword() { return this.Password; }
 
     public void setFullName(String name) {
         if (name == null || name.trim().isEmpty()) {

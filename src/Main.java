@@ -1,12 +1,16 @@
 import Controllers.AuthController;
+import Controllers.ReservationController;
 import Controllers.RoomController;
 import Domains.UserDomain;
+import Repositories.ReservationRepository;
 import Repositories.RoomRepository;
 import Repositories.UserRepository;
 import Services.AuthService;
+import Services.ReservationService;
 import Services.RoomService;
 
 import java.util.Scanner;
+import java.util.UUID;
 
 public class Main {
     public static void main(String[] args) {
@@ -20,8 +24,14 @@ public class Main {
         RoomService roomService = new RoomService(roomsRepo);
         RoomController roomController = new RoomController(roomService);
 
+        ReservationRepository reservationRepo = new ReservationRepository();
+        ReservationService reservationService = new ReservationService(reservationRepo, roomsRepo);
+        ReservationController reservationController = new ReservationController(reservationService);
+
         boolean running = true;
         boolean isLoggedIn = false;
+        UserDomain loggedInUser = null;
+        UUID currentUserId = null; // Track active user's repository UUID
 
         while (running) {
             if (!isLoggedIn) {
@@ -40,10 +50,12 @@ public class Main {
                         authController.register(scanner);
                         break;
                     case 2:
-                        UserDomain loggedInUser = authController.login(scanner);
+                        loggedInUser = authController.login(scanner);
                         if (loggedInUser != null) {
                             isLoggedIn = true;
+                            currentUserId = userRepo.findUserIdByEmail(loggedInUser.getEmail());
                             System.out.println("\nLogged in successfully!\n");
+                            break;
                         }
                         break;
                     case 0:
@@ -72,12 +84,26 @@ public class Main {
                 int choice = readSafeInt(scanner);
 
                 switch (choice) {
-
+                    case 1:
+                        roomController.searchAviableRooms();
+                        break;
                     case 2:
                         roomController.viewAllRooms();
                         break;
+                    case 3:
+                        reservationController.makeReservation(scanner, currentUserId);
+                        break;
+                    case 4:
+                        reservationController.MyReservations(currentUserId);
+                        break;
+                    case 6:
+                        reservationController.MyReservations(currentUserId);
+                            reservationController.cancelReservation(scanner);
+                            break;
                     case 9:
                         isLoggedIn = false;
+                        loggedInUser = null;
+                        currentUserId = null;
                         System.out.println("\nLogged out successfully.\n");
                         break;
                     case 0:

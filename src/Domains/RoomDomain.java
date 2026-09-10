@@ -1,7 +1,10 @@
 package Domains;
 import java.io.Serializable;
-public class RoomDomain implements Serializable {
+import java.util.UUID;
+
+public class RoomDomain {
     private static final long serialVersionUID = 1L;
+    UUID User_Id;
     private String roomNumber;
     private RoomType type;
     private double pricePerNight;

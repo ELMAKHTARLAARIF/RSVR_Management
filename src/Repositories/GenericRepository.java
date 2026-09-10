@@ -63,7 +63,6 @@ public class GenericRepository<T> implements IGenericRepository<T> {
         }
     }
 
-    @SuppressWarnings("unchecked")
     private void loadFromFile() {
         File file = new File(filePath);
         if (!file.exists()) return;

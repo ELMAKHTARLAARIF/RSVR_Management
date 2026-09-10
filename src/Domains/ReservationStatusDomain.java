@@ -1,4 +1,7 @@
 package Domains;
 
-public class ReservationStatusDomain {
+public enum ReservationStatusDomain {
+    CONFIRMED,
+    CANCELLED,
+    COMPLETED
 }
